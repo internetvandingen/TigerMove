@@ -5,8 +5,8 @@ from bot import Bot, RandomBot, MonteCarloBot
 
 
 
-tiger = MonteCarloBot('tiger')
-goat = MonteCarloBot('goat')
+tiger = MonteCarloBot('tiger', T)
+goat = MonteCarloBot('goat', G)
 e = Engine(tiger, goat)
 
 games = []
