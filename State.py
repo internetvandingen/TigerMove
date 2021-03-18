@@ -6,10 +6,14 @@ class State:
       self.board = self.get_start_board()
       self.canGoatsMove = False
       self.goatsEaten = 0
+      self.movenr = 0
+      self.whosTurn = G
     else:
       self.board = state.board
       self.canGoatsMove = state.canGoatsMove
       self.goatsEaten = state.goatsEaten
+      self.movenr = state.movenr
+      self.whosTurn = state.whosTurn
 
   def get_start_board(self):
     return (T, E, E, E, T,
@@ -18,7 +22,13 @@ class State:
             E, E, E, E, E,
             T, E, E, E, T)
 
-  def getLegalTigerMoves(self):
+  def getLegalMoves(self):
+    if self.whosTurn == T:
+      return self._getLegalTigerMoves()
+    else:
+      return self._getLegalGoatMoves()
+
+  def _getLegalTigerMoves(self):
     available_moves = []
     for index in range(0, 25):
       if (self.board[index] == T):
@@ -37,7 +47,7 @@ class State:
 
     return available_moves
 
-  def getLegalGoatMoves(self):
+  def _getLegalGoatMoves(self):
     available_moves = []
     if self.canGoatsMove:
       for index in range(0, 25):
@@ -52,7 +62,18 @@ class State:
           available_moves.append(index)
     return available_moves
 
-  def parseGoatMove(self, goatMove):
+  def parseMove(self, move):
+    if self.whosTurn == T:
+      self._parseTigerMove(move)
+      if self.movenr == 20:
+        self.canGoatsMove = True
+    else:
+      self.movenr += 1
+      self._parseGoatMove(move)
+    self.whosTurn *= -1
+
+
+  def _parseGoatMove(self, goatMove):
     if self.canGoatsMove:
       move_from = goatMove[0]
       move_to = goatMove[1]
@@ -62,9 +83,8 @@ class State:
       self.board = self.board[:move_to] + (G,) + self.board[move_to+1:]
     else:
       self.board = self.board[:goatMove] + (G,) + self.board[goatMove+1:]
-    return E
 
-  def parseTigerMove(self, tigerMove):
+  def _parseTigerMove(self, tigerMove):
     move_from = tigerMove[0]
     move_to = tigerMove[1]
     diff_y = move_to//5 - move_from//5
@@ -79,7 +99,7 @@ class State:
   def getWinner(self):
     if self.goatsEaten > 4:
       return T
-    elif len(self.getLegalTigerMoves()) == 0:
+    elif len(self._getLegalTigerMoves()) == 0:
       return G
     else:
       return E

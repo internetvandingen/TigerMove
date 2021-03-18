@@ -2,7 +2,7 @@ E =  0 # empty
 T = -1 # tiger
 G =  1 # goat
 
-MAX_MOVES = 1000
+MAX_MOVES = 22
 
 
 NEIGHBORS = (
