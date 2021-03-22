@@ -72,7 +72,6 @@ class State:
       self._parseGoatMove(move)
     self.whosTurn *= -1
 
-
   def _parseGoatMove(self, goatMove):
     if self.canGoatsMove:
       move_from = goatMove[0]
@@ -97,7 +96,9 @@ class State:
     self.board = self.board[:move_to] + (T,) + self.board[move_to+1:]
 
   def getWinner(self):
-    if self.goatsEaten > 4:
+    if self.movenr == MAX_MOVES:
+      return E
+    if self.goatsEaten > 4 or len(self._getLegalGoatMoves()) == 0:
       return T
     elif len(self._getLegalTigerMoves()) == 0:
       return G

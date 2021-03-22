@@ -1,5 +1,5 @@
 from definitions import *
-from State import State
+from state import State
 from printing import print_board
 
 class Engine:
@@ -12,7 +12,7 @@ class Engine:
     self.hasWinner = E
 
   def reset_state(self, state):
-    self.state = state
+    self.state = State(state)
     self.hasWinner = state.getWinner()
 
   def play(self, verbose=0):

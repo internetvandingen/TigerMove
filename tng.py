@@ -3,17 +3,19 @@ from printing import print_board
 from engine import Engine
 from bot import Bot, RandomBot, MonteCarloBot
 
-
+from state import State
 
 tiger = RandomBot('tiger', T)
-goat = RandomBot('goat', G)
+# goat = RandomBot('goat', G)
+goat = MonteCarloBot('goat', G)
 e = Engine(tiger, goat)
 
+
 games = []
-n = 1000
+n = 1
 
 for i in range(0,n):
-  games.append(e.play(verbose=0))
+  games.append(e.play(verbose=1))
   e.reset()
 
 
